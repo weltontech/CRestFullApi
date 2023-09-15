@@ -12,5 +12,6 @@ public class FilmeProfile : Profile
     {
         //fazendo um mappeamento de CreateFilmeDto para Filme 
         CreateMap<CreateFilmeDto, Filme>();
+        CreateMap<UpdateFilmeDto, Filme>();
     }
 }
