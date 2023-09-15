@@ -1,4 +1,6 @@
-﻿using FilmesApi.Data;
+﻿using AutoMapper;
+using FilmesApi.Data;
+using FilmesApi.Data.Dtos;
 using FilmesApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,15 +13,20 @@ public class UsuarioController : ControllerBase
 {
     //Injejar dependencia contexto Usuario
     private UsuarioContext _context;
+    private IMapper _mapper;
 
-    public UsuarioController(UsuarioContext context)
+    public UsuarioController(UsuarioContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     [HttpPost]
-    public IActionResult cadastrar([FromBody] Usuario usuario)
+    public IActionResult cadastrar([FromBody] CreateUsuarioDto usuarioDto)
     {
+        //Fazendo um mapeamento de um filme a partir de um filmeDTO
+              
+        Usuario usuario = _mapper.Map<Usuario>(usuarioDto);
         _context.Add(usuario);
         _context.SaveChanges();
         //O padrão REST pede que ao adicionar um objeto, voce retorne o objeto e o caminho deste objeto

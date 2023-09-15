@@ -11,6 +11,8 @@ builder.Services.AddDbContext<FilmeContext>(opts =>
 builder.Services.AddDbContext<UsuarioContext>(opts =>
     opts.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
+//Adicionando o AutoMapper em todo o contexto da minha aplicação
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Add services to the container.
 
 builder.Services.AddControllers();
