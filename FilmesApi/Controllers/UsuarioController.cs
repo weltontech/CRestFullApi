@@ -18,4 +18,10 @@ public class UsuarioController
         Console.WriteLine(usuario.dataNascimento);
     }
 
+    [HttpGet]
+    public List<Usuario> RecuperaUsuario()
+    {
+        return usuarios;
+    }
+
 }
