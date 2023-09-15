@@ -49,4 +49,17 @@ public class UsuarioController : ControllerBase
         return Ok(usuario);
     }
 
+    [HttpPut("{id}")]
+    public IActionResult AtualizaUsuario(int id, [FromBody] UpdateUsuarioDto usuarioDto)
+    {
+        //Recuperar o filme no banco a partir do id
+        var usuario = _context.Usuarios.FirstOrDefault(
+            usuario => usuario.Id == id);
+        if (usuario == null) return NotFound();
+        _mapper.Map(usuarioDto, usuario);
+        _context.SaveChanges();
+        return NoContent();
+        
+    }
+
 }

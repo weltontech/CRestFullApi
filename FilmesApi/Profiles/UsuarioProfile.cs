@@ -13,6 +13,7 @@ public class UsuarioProfile : Profile
 
         //fazendo um mappeamento de CreateUsuarioDto para Usuario 
         CreateMap<CreateUsuarioDto, Usuario>();
+        CreateMap<UpdateUsuarioDto, Usuario>();
 
     }
     
