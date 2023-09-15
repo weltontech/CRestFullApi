@@ -5,9 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("FilmeConnection");
 
-//Add service de Conection to Myswql
+//Add service de Conection to Mysql
 builder.Services.AddDbContext<FilmeContext>(opts =>
     opts.UseMySql(connectionString,ServerVersion.AutoDetect(connectionString)));
+builder.Services.AddDbContext<UsuarioContext>(opts =>
+    opts.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 // Add services to the container.
 

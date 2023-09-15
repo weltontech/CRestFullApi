@@ -1,27 +1,45 @@
-﻿using FilmesApi.Models;
+﻿using FilmesApi.Data;
+using FilmesApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FilmesApi.Controllers;
 
 [Controller]
 [Route("[controller]")]
-public class UsuarioController
+public class UsuarioController : ControllerBase
 {
-    
-    private static List<Usuario> usuarios = new List<Usuario>();
+    //Injejar dependencia contexto Usuario
+    private UsuarioContext _context;
+
+    public UsuarioController(UsuarioContext context)
+    {
+        _context = context;
+    }
 
     [HttpPost]
-    public void cadastrar([FromBody] Usuario usuario)
+    public IActionResult cadastrar([FromBody] Usuario usuario)
     {
-        usuarios.Add(usuario);
-        Console.WriteLine(usuario.nome);
-        Console.WriteLine(usuario.dataNascimento);
+        _context.Add(usuario);
+        _context.SaveChanges();
+        //O padrão REST pede que ao adicionar um objeto, voce retorne o objeto e o caminho deste objeto
+        return CreatedAtAction(nameof(RecuperaUsuarioPorId), new { id = usuario.Id }, usuario);
     }
 
     [HttpGet]
-    public List<Usuario> RecuperaUsuario()
+
+    public IEnumerable<Usuario> RecuperaUsuario([FromQuery] int skip = 0, [FromQuery] int take = 50)
     {
-        return usuarios;
+        return _context.Usuarios.Skip(skip).Take(take);
+
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult RecuperaUsuarioPorId(int id) 
+    {
+        var usuario = _context.Usuarios.FirstOrDefault(usuario => usuario.Id == id);
+        if (usuario == null) return NotFound();
+        return Ok(usuario);
     }
 
 }
