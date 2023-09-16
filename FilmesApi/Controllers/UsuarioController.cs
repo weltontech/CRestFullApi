@@ -2,6 +2,7 @@
 using FilmesApi.Data;
 using FilmesApi.Data.Dtos;
 using FilmesApi.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -60,6 +61,30 @@ public class UsuarioController : ControllerBase
         _context.SaveChanges();
         return NoContent();
         
+    }
+
+    [HttpPatch("{id}")]
+    public IActionResult AtualizaUsuarioParcial(int id,
+        [FromBody] JsonPatchDocument<UpdateUsuarioDto> patch)
+    {
+        //Recupera o usuario no banco a partir do id
+        var usuario = _context.Usuarios.FirstOrDefault(
+            usuario => usuario.Id == id);
+        if (usuario == null) return NotFound();
+
+        //converte o filme que pegamos no banco para conseguir aplicar regras de validação
+        var usuarioParaAtualizar = _mapper.Map<UpdateUsuarioDto>(usuario);
+        //aplica as mudanças que queremos ao objeto
+        patch.ApplyTo(usuarioParaAtualizar, ModelState);
+        //valida se o patch.apply funcionou e se as mudanças no forem validas
+        if (!TryValidateModel(usuario))
+        {
+            return ValidationProblem(ModelState);
+        }
+        _mapper.Map(usuarioParaAtualizar, usuario);
+        _context.SaveChanges();
+        return NoContent();
+
     }
 
 }
