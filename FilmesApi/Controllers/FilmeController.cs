@@ -23,6 +23,7 @@ public class FilmeController : ControllerBase
         _mapper = mapper;
     }
 
+    
     [HttpPost]
     public IActionResult AdicionaFilme([FromBody] CreateFilmeDto filmeDto)
     {
@@ -36,9 +37,9 @@ public class FilmeController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<Filme> RecuperaFilme([FromQuery] int skip = 0, [FromQuery] int take = 50)
+    public IEnumerable<ReadFilmeDto> RecuperaFilme([FromQuery] int skip = 0, [FromQuery] int take = 50)
     {
-        return _context.Filmes.Skip(skip).Take(take);
+        return _mapper.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(skip).Take(take));
 
     }
 
@@ -46,9 +47,11 @@ public class FilmeController : ControllerBase
     public IActionResult RecuperaFilmePorId(int id)
     {
 
-        var filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
+        var filme = _context.Filmes
+            .FirstOrDefault(filme => filme.Id == id);
         if (filme == null) return NotFound();
-        return Ok(filme);
+        var filmeDto = _mapper.Map<ReadFilmeDto>(filme);
+        return Ok(filmeDto);
     }
 
     [HttpPut("{id}")]
@@ -88,5 +91,20 @@ public class FilmeController : ControllerBase
         _context.SaveChanges();
         return NoContent();
     }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeletaFilme(int id)
+    {
+        //a linha abaixo vai recuperar o filme no banco a partir do id
+        var filme = _context.Filmes.FirstOrDefault(
+            //quero que este filme que eu estou procurando tenha o mesmo id que estou recebendo
+            filme => filme.Id == id);
+        if (filme == null) return NotFound();
+
+        _context.Remove(filme);
+        _context.SaveChanges();
+        return NoContent();
+    }
+   
 
 }
