@@ -16,5 +16,7 @@ namespace FilmesApi.Models
 
         public virtual Cinema Cinema { get; set; }
 
+        public virtual Pessoa Pessoa { get; set; }
+
     }
 }

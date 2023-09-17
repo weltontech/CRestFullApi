@@ -10,6 +10,7 @@ namespace FilmesApi.Controllers
     [Route("[controller]")]
     public class CinemaController : ControllerBase
     {
+        //injeção do context 
         private FilmeContext _context;
         private IMapper _mapper;
 
