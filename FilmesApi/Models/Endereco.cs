@@ -14,5 +14,7 @@ namespace FilmesApi.Models
         
         public int numero { get; set; }
 
+        public virtual Cinema Cinema { get; set; }
+
     }
 }
