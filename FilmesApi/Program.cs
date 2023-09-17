@@ -9,7 +9,8 @@ var connectionString = builder.Configuration.GetConnectionString("FilmeConnectio
 
 //Add service de Conection to Mysql
 builder.Services.AddDbContext<FilmeContext>(opts =>
-    opts.UseMySql(connectionString,ServerVersion.AutoDetect(connectionString)));
+    //Metodo UseLazyLoadingProxies() para resolver a questao de null entre entidades
+    opts.UseLazyLoadingProxies().UseMySql(connectionString,ServerVersion.AutoDetect(connectionString)));
 
 
 //Adicionando o AutoMapper em todo o contexto da minha aplicação

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FilmesApi.Controllers
 {
     [ApiController]
-    [Route("[controlller]")]
+    [Route("[controller]")]
     public class CinemaController : ControllerBase
     {
         private FilmeContext _context;
@@ -32,7 +32,9 @@ namespace FilmesApi.Controllers
         [HttpGet]
         public IEnumerable<ReadCinemaDto> RecuperaCinemas()
         {
-            return _mapper.Map<List<ReadCinemaDto>>(_context.Cinemas.ToList());
+                 var listaDeCinemas = _mapper.Map<List<ReadCinemaDto>>
+                (_context.Cinemas.ToList());
+            return listaDeCinemas;
         }
 
         [HttpGet("{id}")]
