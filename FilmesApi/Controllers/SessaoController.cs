@@ -18,7 +18,7 @@ namespace FilmesApi.Controllers
             _context = context;
             _mapper = mapper;
         }
-
+         
         [HttpPost]
         public IActionResult AdicionaSessao(CreateSessaoDto dto)
         {

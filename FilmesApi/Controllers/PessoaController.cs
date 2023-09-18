@@ -31,7 +31,7 @@ public class PessoaController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<ReadPessoaDto> RecuperaPessoas()
+    public IEnumerable<ReadPessoaDto> RecuperaPessoas() 
     {
         var listaDePessoas = _mapper.Map<List<ReadPessoaDto>>
        (_context.Pessoa.ToList());
