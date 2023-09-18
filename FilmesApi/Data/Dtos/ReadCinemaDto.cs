@@ -8,5 +8,9 @@ namespace FilmesApi.Data.Dtos
         public string nome { get; set; }
 
         public ReadEnderecoDto Endereco { get; set; }
+
+        public ICollection<ReadSessaoDto> Sessoes { get; set; }
+
+
     }
 }

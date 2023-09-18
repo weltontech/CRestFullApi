@@ -13,7 +13,9 @@ namespace FilmesApi.Profiles
              * estou ensinando minha aplicacao converter um cinema em um ReadCinemaDto* */
             CreateMap<Cinema, ReadCinemaDto>()
                 .ForMember(cinemaDto => cinemaDto.Endereco,
-                opt => opt.MapFrom(cinema => cinema.Endereco));
+                opt => opt.MapFrom(cinema => cinema.Endereco))
+                .ForMember(cinemaDto => cinemaDto.Sessoes,
+                opt => opt.MapFrom(cinema => cinema.Sessoes));
             CreateMap<UpdateCinemaDto, Cinema>();
 
         }

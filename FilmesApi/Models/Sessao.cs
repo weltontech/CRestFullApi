@@ -14,5 +14,10 @@ namespace FilmesApi.Models
 
         //relação estabelecida
         public virtual Filme Filme { get; set; }
+
+        //? diz que o valor pode ser nullo
+        public int? CinemaId { get; set; }
+        public virtual Cinema Cinema { get; set; }
+
     }
 }
