@@ -9,8 +9,8 @@ namespace FilmesApi.Models
         public int Id { get; set; }
 
         //Relacionamento dizemos que uma sessao para ser criada requer um FilmeId
-        [Required]
-        public int FilmeId { get; set; }
+        
+        public int? FilmeId { get; set; }
 
         //relação estabelecida
         public virtual Filme Filme { get; set; }
