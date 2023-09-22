@@ -20,5 +20,8 @@ namespace FilmesApi.Models
         //Instancia do objeto relacionado
         public virtual Endereco Endereco { get; set; }
 
+        // fk 1:n Pessoa:Chamados 
+        public virtual ICollection<Chamado> Chamados { get; set; }
+
     }
 }
