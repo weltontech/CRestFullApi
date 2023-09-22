@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FilmesApi.Migrations
 {
     [DbContext(typeof(FilmeContext))]
-    [Migration("20230922104045_Updade type column descricao ")]
-    partial class Updadetypecolumndescricao
+    [Migration("20230922180119_Fix Duplicate name id")]
+    partial class FixDuplicatenameid
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -121,6 +121,10 @@ namespace FilmesApi.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int>("EnderecoId")
                         .HasColumnType("int");
 
@@ -134,10 +138,13 @@ namespace FilmesApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EnderecoId")
-                        .IsUnique();
+                    b.HasIndex("EnderecoId");
 
-                    b.ToTable("Pessoa");
+                    b.ToTable("Pessoas");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Pessoa");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("FilmesApi.Models.Sessao", b =>
@@ -156,6 +163,24 @@ namespace FilmesApi.Migrations
                     b.HasIndex("CinemaId");
 
                     b.ToTable("Sessoes");
+                });
+
+            modelBuilder.Entity("FilmesApi.Models.Funcionario", b =>
+                {
+                    b.HasBaseType("FilmesApi.Models.Pessoa");
+
+                    b.Property<int>("Matricula")
+                        .HasColumnType("int");
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("senha")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasDiscriminator().HasValue("Funcionario");
                 });
 
             modelBuilder.Entity("FilmesApi.Models.Chamado", b =>
@@ -181,9 +206,9 @@ namespace FilmesApi.Migrations
             modelBuilder.Entity("FilmesApi.Models.Pessoa", b =>
                 {
                     b.HasOne("FilmesApi.Models.Endereco", "Endereco")
-                        .WithOne("Pessoa")
-                        .HasForeignKey("FilmesApi.Models.Pessoa", "EnderecoId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithMany("Pessoas")
+                        .HasForeignKey("EnderecoId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Endereco");
@@ -218,8 +243,7 @@ namespace FilmesApi.Migrations
                     b.Navigation("Cinema")
                         .IsRequired();
 
-                    b.Navigation("Pessoa")
-                        .IsRequired();
+                    b.Navigation("Pessoas");
                 });
 
             modelBuilder.Entity("FilmesApi.Models.Filme", b =>

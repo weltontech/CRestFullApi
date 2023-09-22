@@ -30,16 +30,23 @@ public class FilmeContext : DbContext
            .WithMany(cinema => cinema.Sessoes)
            .HasForeignKey(sessao => sessao.FilmeId);
 
-         //definir qual o tipo de deleção queremos
+        builder.Entity<Pessoa>()
+           .HasOne(pessoa => pessoa.Endereco)
+           .WithMany(endereco => endereco.Pessoas)
+           .HasForeignKey(pessoa => pessoa.EnderecoId);
+
+
+
+        //definir qual o tipo de deleção queremos
         builder.Entity<Endereco>()
             .HasOne(Endereco => Endereco.Cinema)
             .WithOne(cinema => cinema.Endereco)
             .OnDelete(DeleteBehavior.Restrict);
-
+        /**
         builder.Entity<Endereco>()
            .HasOne(Endereco => Endereco.Pessoa)
            .WithOne(pessoa => pessoa.Endereco)
-           .OnDelete(DeleteBehavior.Restrict);
+           .OnDelete(DeleteBehavior.Restrict); **/
 
     }
 
@@ -49,8 +56,9 @@ public class FilmeContext : DbContext
     public DbSet<Cinema> Cinemas { get; set; }
     public DbSet<Endereco> Enderecos { get; set; }
     public DbSet<Sessao> Sessoes { get; set; }
-    public DbSet<Pessoa> Pessoa { get; set; }
+    public DbSet<Pessoa> Pessoas { get; set; }
     public DbSet<Chamado> Chamados { get; set; }
+    public DbSet<Funcionario> Funcionarios { get; set; }    
 
 
 }

@@ -25,7 +25,7 @@ public class PessoaController : ControllerBase
     public IActionResult AdicionaPessoa([FromBody] CreatePessoaDto pessoaDto)
     {
         Pessoa pessoa = _mapper.Map<Pessoa>(pessoaDto);
-        _context.Pessoa.Add(pessoa);
+        _context.Pessoas.Add(pessoa);
         _context.SaveChanges();
         return CreatedAtAction(nameof(RecuperaPessoasPorId), new { Id = pessoa.Id }, pessoaDto);
     }
@@ -34,14 +34,14 @@ public class PessoaController : ControllerBase
     public IEnumerable<ReadPessoaDto> RecuperaPessoas() 
     {
         var listaDePessoas = _mapper.Map<List<ReadPessoaDto>>
-       (_context.Pessoa.ToList());
+       (_context.Pessoas.ToList());
         return listaDePessoas;
     }
 
     [HttpGet("{id}")]
     public IActionResult RecuperaPessoasPorId(int id)
     {
-        Pessoa pessoa = _context.Pessoa.FirstOrDefault(pessoa => pessoa.Id == id);
+        Pessoa pessoa = _context.Pessoas.FirstOrDefault(pessoa => pessoa.Id == id);
         if (pessoa != null)
         {
             ReadPessoaDto pessoaDto = _mapper.Map<ReadPessoaDto>(pessoa);
@@ -53,7 +53,7 @@ public class PessoaController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult AtualizaPessoa(int id, [FromBody] UpdatePessoaDto pessoaDto)
     {
-        Pessoa pessoa = _context.Pessoa.FirstOrDefault(pessoa => pessoa.Id == id);
+        Pessoa pessoa = _context.Pessoas.FirstOrDefault(pessoa => pessoa.Id == id);
         if (pessoa == null)
         {
             return NotFound();
@@ -67,7 +67,7 @@ public class PessoaController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Deletapessoa(int id)
     {
-        Pessoa pessoa = _context.Pessoa.FirstOrDefault(pessoa => pessoa.Id == id);
+        Pessoa pessoa = _context.Pessoas.FirstOrDefault(pessoa => pessoa.Id == id);
         if (pessoa == null)
         {
             return NotFound();

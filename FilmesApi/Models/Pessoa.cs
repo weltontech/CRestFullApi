@@ -15,9 +15,6 @@ namespace FilmesApi.Models
         public string CPF { get; set; }
 
         public int EnderecoId { get; set; }
-
-        //Serve para fazer o relacionamento, mais tmb serve para fazer uma 
-        //Instancia do objeto relacionado
         public virtual Endereco Endereco { get; set; }
 
         // fk 1:n Pessoa:Chamados 
